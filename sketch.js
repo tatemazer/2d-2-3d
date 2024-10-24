@@ -3,8 +3,12 @@ let myModel;
 let saveBtn1;
 let generateBtn1;
 let generateBtn2;
-var canvasWidth = 400;
-var canvasHeight = 400;
+let generateBtn3;
+let generateBtn4;
+let generateBtn5;
+var canvasWidth = 800;
+var canvasHeight = 800;
+var backgroundColor;
 
 //3D box dimensions
 var bWidth = 1;
@@ -14,7 +18,7 @@ var baseHeight = 20;
 
 function preload() {
   // Load the bottom image from the canvas's assets directory.
-  img = loadImage("boxes.jpg");
+  img = loadImage("stanczak.png");
 }
 
 function setup() {
@@ -22,7 +26,7 @@ function setup() {
 
   //bug: setting x and y to different sizes does not
   // seem to stretch the final 3D model
-  img.resize(200, 200);
+  img.resize(400, 400);
   img.loadPixels();
 
   //convert the very long 1D array
@@ -32,25 +36,40 @@ function setup() {
   //run default filter
   brightness_filter(imgArray);
 
-  //show image
-  image(img, -canvasWidth / 2, -canvasHeight / 2);
-
   //add buttons
   saveBtn1 = createButton("Save .stl");
   saveBtn1.mousePressed(function () {
     myModel.saveStl();
   });
 
-  //add button
+  // Dark == HIGH
   generateBtn1 = createButton("brightness");
   generateBtn1.mousePressed(function () {
     brightness_filter(imgArray);
   });
 
-  //add button
+  // Light == HIGH
   generateBtn2 = createButton("inverted brightness");
   generateBtn2.mousePressed(function () {
     inverted_brightness_filter(imgArray);
+  });
+  
+  // red == HIGH (so does white)
+  generateBtn3 = createButton("red");
+  generateBtn3.mousePressed(function () {
+    red_filter(imgArray);
+  });
+  
+  // green == HIGH (so does white);
+  generateBtn4 = createButton("green");
+  generateBtn4.mousePressed(function () {
+    green_filter(imgArray);
+  });
+  
+  // blue == HIGH (so does white);
+  generateBtn5 = createButton("blue");
+  generateBtn5.mousePressed(function () {
+    blue_filter(imgArray);
   });
 }
 
@@ -92,6 +111,54 @@ function inverted_brightness_filter(array_in) {
       for (var y = 0; y < array_grayscale[0].length; y++) {
         //grab a subpixel and use this as the height of this box.
         z = array_grayscale[x][y] / 20 + baseHeight;
+        makeBox(x, y, z);
+      }
+    }
+  });
+  model(myModel);
+}
+
+function red_filter(array_in) {
+
+  //create 3D drawing
+  myModel = buildGeometry(() => {
+    //Loop through individual x,y pixels of array
+    for (var x = 0; x < array_in.length; x++) {
+      for (var y = 0; y < array_in[0].length; y++) {
+        //grab a subpixel and use this as the height of this box.
+        z = array_in[x][y][0] / 20 + baseHeight;
+        makeBox(x, y, z);
+      }
+    }
+  });
+  model(myModel);
+}
+
+function green_filter(array_in) {
+
+  //create 3D drawing
+  myModel = buildGeometry(() => {
+    //Loop through individual x,y pixels of array
+    for (var x = 0; x < array_in.length; x++) {
+      for (var y = 0; y < array_in[0].length; y++) {
+        //grab a subpixel and use this as the height of this box.
+        z = array_in[x][y][1] / 20 + baseHeight;
+        makeBox(x, y, z);
+      }
+    }
+  });
+  model(myModel);
+}
+
+function blue_filter(array_in) {
+  
+  //create 3D drawing
+  myModel = buildGeometry(() => {
+    //Loop through individual x,y pixels of array
+    for (var x = 0; x < array_in.length; x++) {
+      for (var y = 0; y < array_in[0].length; y++) {
+        //grab a subpixel and use this as the height of this box.
+        z = array_in[x][y][2] / 20 + baseHeight;
         makeBox(x, y, z);
       }
     }
