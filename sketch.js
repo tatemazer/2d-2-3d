@@ -14,11 +14,12 @@ var backgroundColor;
 var bWidth = 1;
 var bHeight = 1;
 var z;
-var baseHeight = 20;
+var baseHeight = 10;
+var heightRange = 100;
 
 function preload() {
   // Load the bottom image from the canvas's assets directory.
-  img = loadImage("stanczak.png");
+  img = loadImage("bosman.jpg");
 }
 
 function setup() {
@@ -92,7 +93,7 @@ function brightness_filter(array_in) {
     for (var x = 0; x < array_grayscale.length; x++) {
       for (var y = 0; y < array_grayscale[0].length; y++) {
         //grab a susbpixel and use this as the height of this box.
-        z = (255 - array_grayscale[x][y]) / 20 + baseHeight;
+        z = (255 - array_grayscale[x][y]) * heightRange/255 + baseHeight;
         makeBox(x, y, z);
       }
     }
@@ -110,7 +111,7 @@ function inverted_brightness_filter(array_in) {
     for (var x = 0; x < array_grayscale.length; x++) {
       for (var y = 0; y < array_grayscale[0].length; y++) {
         //grab a subpixel and use this as the height of this box.
-        z = array_grayscale[x][y] / 20 + baseHeight;
+        z = array_grayscale[x][y] * heightRange/255 + baseHeight;
         makeBox(x, y, z);
       }
     }
@@ -126,7 +127,7 @@ function red_filter(array_in) {
     for (var x = 0; x < array_in.length; x++) {
       for (var y = 0; y < array_in[0].length; y++) {
         //grab a subpixel and use this as the height of this box.
-        z = array_in[x][y][0] / 20 + baseHeight;
+        z = array_in[x][y][0] * heightRange/255 + baseHeight;
         makeBox(x, y, z);
       }
     }
@@ -142,7 +143,7 @@ function green_filter(array_in) {
     for (var x = 0; x < array_in.length; x++) {
       for (var y = 0; y < array_in[0].length; y++) {
         //grab a subpixel and use this as the height of this box.
-        z = array_in[x][y][1] / 20 + baseHeight;
+        z = array_in[x][y][1] * heightRange/255 + baseHeight;
         makeBox(x, y, z);
       }
     }
@@ -158,7 +159,7 @@ function blue_filter(array_in) {
     for (var x = 0; x < array_in.length; x++) {
       for (var y = 0; y < array_in[0].length; y++) {
         //grab a subpixel and use this as the height of this box.
-        z = array_in[x][y][2] / 20 + baseHeight;
+        z = array_in[x][y][2] * heightRange/255 + baseHeight;
         makeBox(x, y, z);
       }
     }
